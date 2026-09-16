@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="ReefTrack role workspace">
+<title>BFAR / LGU Official | ReefTrack</title>
+<link rel="icon" href="../../assets/images/LOGO.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="official-dashboard.css">
+</head>
+<body class="role-official min-vh-100" data-role="official">
+<aside id="sidebar">
+<a class="workspace-brand" href="#dashboard" aria-label="Go to BFAR/LGU dashboard">
+<img src="../../assets/images/LOGO.png" alt="ReefTrack logo">
+<span>
+<strong>ReefTrack</strong>
+<small>Production and field records</small>
+</span>
+</a>
+<div class="official-role-card">
+<span>BL</span>
+<div>
+<strong id="side-name">BFAR/LGU Official</strong>
+<small>Regulatory Reviewer</small>
+</div>
+<em>OFFICIAL</em>
+</div>
+<nav class="official-side-nav">
+<label>OVERVIEW</label>
+<button class="active rt-nav-button" data-view="dashboard">
+<span class="rt-nav-icon ph ph-house" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Dashboard</span>
+</button>
+<label>REGULATORY REVIEW</label>
+<button class="rt-nav-button" data-view="scanner">
+<span class="rt-nav-icon ph ph-scan" aria-hidden="true">
+</span>
+<span class="rt-nav-label">QR Scanner</span>
+</button>
+<button class="rt-nav-button" data-view="records">
+<span class="rt-nav-icon ph ph-files" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Validated Records</span>
+</button>
+<button class="rt-nav-button" data-view="deployments">
+<span class="rt-nav-icon ph ph-map-pin" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Deployment Locations</span>
+</button>
+<button class="rt-nav-button" data-view="monitoring">
+<span class="rt-nav-icon ph ph-eye" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Monitoring Records</span>
+</button>
+<button class="rt-nav-button" data-view="reports">
+<span class="rt-nav-icon ph ph-chart-bar" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Reports</span>
+</button>
+<button class="rt-nav-button" data-view="compliance">
+<span class="rt-nav-icon ph ph-check-square-offset" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Compliance Trail</span>
+</button>
+<label>ADMINISTRATION</label>
+<button class="rt-nav-button" data-view="history">
+<span class="rt-nav-icon ph ph-clock-counter-clockwise" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Login History</span>
+</button>
+</nav>
+<button class="logout official-logout rt-nav-button" id="logout">
+<span class="rt-nav-icon ph ph-sign-out" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Logout</span>
+</button>
+</aside>
+<div class="shell">
+<header>
+<button id="menu" type="button" aria-label="Open navigation">
+<i class="ph ph-list" aria-hidden="true">
+</i>
+</button>
+<div class="topbar-title">
+<small>DOrSU Artificial Reef Production Facility</small>
+<b id="page-title">BFAR / LGU Official</b>
+</div>
+<div class="top-actions">
+<span class="readonly">READ ONLY</span>
+<button class="top-profile" type="button" data-go="profile">
+<span>BL</span>
+<div>
+<strong id="top-name">BFAR/LGU Official</strong>
+<small>Regulatory Reviewer</small>
+</div>
+</button>
+</div>
+</header>
+<main>
+<section class="view active" id="dashboard">
+<div class="welcome">
+<div>
+<small>REGULATORY OVERVIEW</small>
+<h1>Good day, <span id="welcome-name">Official</span>
+</h1>
+<p>Here is the latest validated production, deployment, and monitoring status.</p>
+</div>
+<span class="role-pill">Inspection · Read only</span>
+</div>
+<div class="stats">
+<article>
+<i class="ph ph-files" aria-hidden="true"></i>
+<div>
+<small>Validated Batches</small>
+<strong id="s-batches">0</strong>
+<em>Available for review</em>
+</div>
+</article>
+<article>
+<i class="ph ph-cube" aria-hidden="true"></i>
+<div>
+<small>Deployed Reef Units</small>
+<strong id="s-units">0</strong>
+<em>Validated deployments</em>
+</div>
+</article>
+<article>
+<i class="ph ph-map-pin" aria-hidden="true"></i>
+<div>
+<small>Deployment Sites</small>
+<strong id="s-sites">0</strong>
+<em>Mapped locations</em>
+</div>
+</article>
+<article>
+<i class="ph ph-binoculars" aria-hidden="true"></i>
+<div>
+<small>Monitoring Records</small>
+<strong id="s-monitor">0</strong>
+<em>Validated observations</em>
+</div>
+</article>
+<article>
+<i class="ph ph-file-arrow-down" aria-hidden="true"></i>
+<div>
+<small>Available Reports</small>
+<strong>5</strong>
+<em>Authorized report types</em>
+</div>
+</article>
+</div>
+<div class="dashboard-grid">
+<article class="panel span-2">
+<div class="panel-head">
+<div>
+<h2>Recent Validated Records</h2>
+<p>Latest batches authorized for regulatory review</p>
+</div>
+<button class="text-btn" data-go="records">View all</button>
+</div>
+<div class="table" id="recent">
+</div>
+</article>
+<article class="panel">
+<div class="panel-head">
+<div>
+<h2>Recent Deployments</h2>
+<p>Latest validated site activity</p>
+</div>
+</div>
+<div id="recent-deployments">
+</div>
+</article>
+<article class="panel">
+<div class="panel-head">
+<div>
+<h2>Latest Monitoring</h2>
+<p>Recent validated observations</p>
+</div>
+</div>
+<div id="recent-monitoring">
+</div>
+</article>
+<article class="panel span-2">
+<div class="panel-head">
+<div>
+<h2>Regulatory Access</h2>
+<p>Authorized inspection information</p>
+</div>
+</div>
+<div class="access-summary">
+<span>Validated production</span>
+<span>Deployment locations</span>
+<span>Monitoring history</span>
+<span>Authorized reports</span>
+</div>
+</article>
+<article class="panel">
+<div class="panel-head">
+<div>
+<h2>Quick Access</h2>
+<p>Common review tools</p>
+</div>
+</div>
+<div class="quick-grid">
+<button data-go="scanner">
+<i class="ph ph-qr-code" aria-hidden="true">
+</i>
+<span>QR Scan</span>
+</button>
+<button data-go="records">
+<i class="ph ph-files" aria-hidden="true">
+</i>
+<span>Records</span>
+</button>
+<button data-go="deployments">
+<i class="ph ph-map-pin" aria-hidden="true">
+</i>
+<span>Map</span>
+</button>
+<button data-go="reports">
+<i class="ph ph-chart-bar" aria-hidden="true">
+</i>
+<span>Reports</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<section class="view" id="scanner">
+<div class="head">
+<div>
+<small>SECURE LOOKUP</small>
+<h1>QR Scanner</h1>
+<p>Retrieve validated production, deployment, and monitoring information only.</p>
+</div>
+<span class="readonly">READ ONLY</span>
+</div>
+<div class="scanner-layout">
+<article class="panel scanner-panel">
+<div class="scanner-panel-head">
+<div>
+<i class="ph ph-qr-code" aria-hidden="true">
+</i>
+<div>
+<h2>Scan ReefTrack QR</h2>
+<p>Position the batch code inside the scanning frame.</p>
+</div>
+</div>
+<i>VALIDATED RECORDS ONLY</i>
+</div>
+<div class="camera">
+<video id="video" playsinline muted>
+</video>
+<div class="camera-frame">
+<b>
+</b>
+<b>
+</b>
+<b>
+</b>
+<b>
+</b>
+</div>
+<span id="camera-status">Camera inactive</span>
+</div>
+<div class="scanner-controls">
+<button class="primary" id="start-camera" type="button">
+<i class="ph ph-camera" aria-hidden="true"></i>Start Camera</button>
+<button class="secondary" id="stop-camera" type="button">
+<i class="ph ph-stop-circle" aria-hidden="true"></i>Stop Camera</button>
+<label class="secondary qr-photo-action" for="camera-photo-input">
+<i class="ph ph-image" aria-hidden="true"></i>Take or Choose QR Photo
+<input class="qr-photo-input" id="camera-photo-input" type="file" accept="image/*" capture="environment">
+</label>
+</div>
+<div class="manual-divider">
+<span>OR USE MANUAL LOOKUP</span>
+</div>
+<form id="lookup">
+<label>Batch ID<input name="batch" placeholder="e.g. RT-2026-104" required>
+</label>
+<button class="primary">
+<i class="ph ph-magnifying-glass" aria-hidden="true"></i>Look up Record</button>
+</form>
+<p class="scanner-note">QR results are read-only and limited to records validated for regulatory review.</p>
+</article>
+<article class="panel result-panel" id="scan-result">
+<div class="result-empty">
+<i class="ph ph-qr-code" aria-hidden="true"></i>
+<h2>No batch selected</h2>
+<p>Scan a ReefTrack QR code or enter a validated Batch ID to display its authorized lifecycle information.</p>
+<div class="result-preview">
+<span><i class="ph ph-flask" aria-hidden="true"></i>Mixture result</span>
+<span><i class="ph ph-shield-check" aria-hidden="true"></i>QC status</span>
+<span><i class="ph ph-map-pin" aria-hidden="true"></i>Deployment</span>
+<span><i class="ph ph-binoculars" aria-hidden="true"></i>Monitoring</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<section class="view" id="records">
+<div class="head">
+<div>
+<small>AUTHORIZED DATA</small>
+<h1>Validated Records</h1>
+</div>
+</div>
+<article class="panel">
+<div class="filters">
+<label class="search">
+<i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+<input id="record-search" placeholder="Search batch or mixture" aria-label="Search batch or mixture">
+</label>
+<select id="record-filter">
+<option value="all">All</option>
+<option value="production">Production</option>
+<option value="deployed">Deployed</option>
+<option value="monitored">Monitored</option>
+</select>
+</div>
+<div class="table">
+<table>
+<thead>
+<tr>
+<th>Batch ID</th>
+<th>Production Date</th>
+<th>Mixture Result</th>
+<th>QC Status</th>
+<th>Deployment</th>
+<th>Monitoring</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="record-body">
+</tbody>
+</table>
+</div>
+</article>
+</section>
+<section class="view" id="deployments">
+<div class="head">
+<div>
+<small>GEOSPATIAL REVIEW</small>
+<h1>Deployment Locations</h1>
+<p>Validated markers are locked and read-only.</p>
+</div>
+</div>
+<div class="map-grid">
+<article class="panel">
+<div class="filters">
+<label class="search">
+<i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+<input id="map-search" placeholder="Search location" aria-label="Search deployment location">
+</label>
+<select id="condition">
+<option value="all">All conditions</option>
+<option>Excellent</option>
+<option>Good</option>
+<option>Fair</option>
+<option>Poor</option>
+</select>
+</div>
+<div id="map">
+</div>
+</article>
+<article class="panel" id="site-detail">
+<div class="empty">Select a deployment marker.</div>
+</article>
+</div>
+</section>
+<section class="view" id="monitoring">
+<div class="head">
+<div>
+<small>FIELD OBSERVATIONS</small>
+<h1>Monitoring Records</h1>
+</div>
+</div>
+<article class="panel">
+<div class="filters">
+<label class="search">
+<i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+<input id="monitor-search" placeholder="Search batch, site, or validator" aria-label="Search monitoring records">
+</label>
+</div>
+<div class="cards" id="monitor-list">
+</div>
+</article>
+</section>
+<section class="view" id="reports">
+<div class="head">
+<div>
+<small>AUTHORIZED EXPORTS</small>
+<h1>Reports</h1>
+<p>Access permitted regulatory summaries without modifying their source data.</p>
+</div>
+<span class="readonly">READ ONLY</span>
+</div>
+<div class="report-overview">
+<article>
+<span class="ph ph-files" aria-hidden="true"></span>
+<div>
+<small>AVAILABLE REPORTS</small>
+<b>5</b>
+<p>Authorized report types</p>
+</div>
+</article>
+<article>
+<span class="ph ph-database" aria-hidden="true"></span>
+<div>
+<small>DATA SCOPE</small>
+<b>Validated</b>
+<p>Records only</p>
+</div>
+</article>
+<article>
+<span class="ph ph-file-arrow-down" aria-hidden="true"></span>
+<div>
+<small>EXPORT OPTIONS</small>
+<b>3 formats</b>
+<p>PDF, print, and spreadsheet</p>
+</div>
+</article>
+</div>
+<div class="report-section-head">
+<div>
+<small>REGULATORY REPORT LIBRARY</small>
+<h2>Select an authorized report</h2>
+<p>Generated copies reflect the latest validated information available to your account.</p>
+</div>
+</div>
+<div class="report-grid-official" id="report-list">
+</div>
+<div class="report-access-note">
+<i class="ph ph-info" aria-hidden="true">
+</i>
+<div>
+<b>Report access policy</b>
+<p>BFAR/LGU Officials can view and export authorized reports. Production, QC, deployment, and monitoring source records remain read-only.</p>
+</div>
+</div>
+</section>
+<section class="view" id="compliance">
+<div class="head">
+<div>
+<small>AUDIT-READY LIFECYCLE</small>
+<h1>Compliance Trail</h1>
+<p>Trace every validated stage for inspection and regulatory review.</p>
+</div>
+<span class="readonly">READ ONLY</span>
+</div>
+<article class="panel compliance-panel">
+<div class="trail-toolbar">
+<div>
+<small>VALIDATED BATCH</small>
+<h2>Batch Lifecycle Review</h2>
+<p>Select a production batch to inspect its complete validated trail.</p>
+</div>
+<label class="batch-record-control" for="trail-batch">
+<span>Batch record</span>
+<select id="trail-batch">
+<option value="" selected disabled>Loading validated batches...</option>
+</select>
+</label>
+</div>
+<div class="trail-key">
+<span>
+<i class="complete-dot">
+</i>Completed and validated</span>
+<span>
+<i class="reference-dot">
+</i>Linked record reference</span>
+</div>
+<div id="trail" class="compliance-grid">
+</div>
+<div class="compliance-note">
+<i class="ph ph-shield-check" aria-hidden="true"></i>
+<div>
+<b>Regulatory inspection record</b>
+<span>Lifecycle information is sourced from validated ReefTrack records and cannot be modified from this workspace.</span>
+</div>
+</div>
+</article>
+</section>
+<section class="view" id="history">
+<div class="head">
+<div>
+<small>ACCOUNT SECURITY</small>
+<h1>My Login History</h1>
+<p>Review your account access one calendar date at a time.</p>
+</div>
+<span class="readonly">PRIVATE TO YOUR ACCOUNT</span>
+</div>
+<div class="history-summary">
+<article>
+<span class="ph ph-calendar" aria-hidden="true"></span>
+<div>
+<small>SELECTED DATE LOGINS</small>
+<b id="history-day-total">0</b>
+</div>
+</article>
+<article>
+<span class="ph ph-check-circle" aria-hidden="true"></span>
+<div>
+<small>SUCCESSFUL</small>
+<b id="history-day-success">0</b>
+</div>
+</article>
+<article>
+<span class="ph ph-warning-circle" aria-hidden="true"></span>
+<div>
+<small>FAILED</small>
+<b id="history-day-failed">0</b>
+</div>
+</article>
+</div>
+<article class="panel history-panel">
+<div class="history-toolbar">
+<div>
+<small>DAILY ACCESS RECORD</small>
+<h2 id="history-date-title">Login activity</h2>
+</div>
+<div class="history-date-controls">
+<button id="history-prev-date" type="button" aria-label="Previous date">‹</button>
+<label>Select date<input id="history-date" type="date">
+</label>
+<button id="history-next-date" type="button" aria-label="Next date">›</button>
+</div>
+</div>
+<div class="table history-table">
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Device</th>
+<th>IP address</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="history-body">
+</tbody>
+</table>
+</div>
+<div class="history-pagination">
+<span id="history-page-info">Showing 0 records</span>
+<div>
+<button id="history-prev-page" type="button">Previous</button>
+<button id="history-next-page" type="button">Next</button>
+</div>
+</div>
+</article>
+</section>
+<section class="view user-settings" id="profile">
+<div class="head">
+<div>
+<small>CONFIGURATION</small>
+<h1>Settings</h1>
+<p>Manage your profile, security, and regulatory review preferences.</p>
+</div>
+<button class="primary settings-save" id="official-save-settings" type="button">Save Changes</button>
+</div>
+<div class="settings-grid">
+<form class="panel form setting-card profile-card" id="profile-form">
+<h2>Profile Settings</h2>
+<label>Full name<input name="name" required>
+</label>
+<label>Email address<input name="email" type="email" readonly>
+</label>
+<div class="settings-fields two">
+<label>Organization / Agency<input name="organization" placeholder="e.g. BFAR XI or City ENRO">
+</label>
+<label>Contact number<input name="contact" type="tel" inputmode="tel" placeholder="09XX XXX XXXX">
+</label>
+</div>
+<div class="settings-fields two">
+<label>Position / Designation<input name="position" placeholder="e.g. Fisheries Officer">
+</label>
+<label>Agency type<select name="agencyType">
+<option value="">Select agency type</option>
+<option>BFAR Regional Office</option>
+<option>Provincial LGU</option>
+<option>City / Municipal LGU</option>
+<option>Protected Area Office</option>
+<option>Other Regulatory Office</option>
+</select>
+</label>
+</div>
+<label>Office address<input name="officeAddress" placeholder="Office, barangay, city/municipality, province">
+</label>
+<label>Regulatory area / Jurisdiction<input name="jurisdiction" placeholder="e.g. Davao Oriental coastal municipalities">
+</label>
+</form>
+<form class="panel form setting-card password-card" id="password-form">
+<h2>Password Change</h2>
+<label>Current password<input name="current" type="password" required autocomplete="current-password">
+</label>
+<label>New password<input name="password" type="password" minlength="8" required autocomplete="new-password">
+</label>
+<label>Confirm new password<input name="confirm" type="password" minlength="8" required autocomplete="new-password">
+</label>
+<div class="security-note">
+<b>Account security</b>
+<span>Use at least 8 characters. Never share your official account credentials.</span>
+</div>
+</form>
+<form class="panel form setting-card review-card" id="review-settings-form">
+<h2>Regulatory Review Preferences</h2>
+<div class="settings-fields three">
+<label>Default report format<select name="reportFormat">
+<option>PDF</option>
+<option>Spreadsheet (CSV)</option>
+<option>Print preview</option>
+</select>
+</label>
+<label>Coordinate format<select name="coordinateFormat">
+<option>Decimal degrees</option>
+<option>Degrees, minutes, seconds (DMS)</option>
+</select>
+</label>
+<label>Default map view<select name="mapView">
+<option>Map</option>
+<option>Satellite</option>
+</select>
+</label>
+</div>
+<div class="preference-switches">
+<label>
+<span>
+<b>Validated batch alerts</b>
+<small>Notify when a batch becomes available for review.</small>
+</span>
+<input name="notifyBatches" type="checkbox">
+</label>
+<label>
+<span>
+<b>Deployment alerts</b>
+<small>Notify when a deployment record is validated.</small>
+</span>
+<input name="notifyDeployments" type="checkbox">
+</label>
+<label>
+<span>
+<b>Monitoring alerts</b>
+<small>Notify when validated monitoring is recorded.</small>
+</span>
+<input name="notifyMonitoring" type="checkbox">
+</label>
+<label>
+<span>
+<b>Failed login alerts</b>
+<small>Notify about unsuccessful access attempts.</small>
+</span>
+<input name="notifyFailedLogin" type="checkbox">
+</label>
+</div>
+</form>
+</div>
+</section>
+</main>
+</div>
+<dialog id="record-dialog">
+<button class="close">
+<i class="ph ph-x" aria-hidden="true">
+</i>
+</button>
+<div id="full-record">
+</div>
+</dialog>
+<div class="logout-modal" id="official-logout-modal" aria-hidden="true">
+<div class="modal-card logout-dialog logout-confirm-card" role="dialog" aria-modal="true" aria-labelledby="official-logout-title" aria-describedby="official-logout-description">
+<button class="logout-close" type="button" aria-label="Close logout confirmation">
+<i class="ph ph-x" aria-hidden="true">
+</i>
+</button>
+<span class="logout-confirm-icon" aria-hidden="true"><i class="ph ph-sign-out"></i></span>
+<p class="logout-eyebrow">Account session</p>
+<h2 id="official-logout-title">Sign out of ReefTrack?</h2>
+<p class="logout-confirm-copy" id="official-logout-description">Your saved work will be here when you return. Are you ready to sign out?</p>
+<div class="logout-actions logout-confirm-actions">
+<button class="secondary logout-stay" type="button"><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i>Stay signed in</button>
+<button class="danger logout-confirm" id="official-confirm-logout" type="button"><i class="ph ph-sign-out" aria-hidden="true"></i>Sign out</button>
+</div>
+</div>
+</div>
+<div id="toast">
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+<script src="../../scripts/app-shell.js">
+</script>
+<script src="../../scripts/qrcode.bundle.js">
+</script>
+<script src="official-dashboard.js">
+</script>
+<script src="official-interactions.js">
+</script>
+</body>
+</html>
