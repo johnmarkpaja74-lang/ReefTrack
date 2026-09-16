@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>if (location.protocol !== "file:") location.replace(new URL("../signup", location.href));</script>
+  <meta name="description" content="Create a ReefTrack account.">
+  <title>Create account | ReefTrack</title>
+  <link rel="icon" href="../assets/images/LOGO.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body class="min-vh-100">
+  <main class="auth-shell signup-shell">
+    <section class="auth-story" aria-labelledby="story-title">
+      <a class="brand" href="../LANDINGPAGES/Index.html">
+        <img src="../assets/images/LOGO.png" alt="ReefTrack logo">
+        <span><strong>ReefTrack</strong><small>Artificial reef records</small></span>
+      </a>
+      <div class="story-copy">
+        <p class="eyebrow">Join the shared record</p>
+        <h1 id="story-title">Create an account for your role in reef production.</h1>
+        <p>Your workspace is matched to the responsibilities you select during registration.</p>
+      </div>
+      <ol class="account-steps"><li><span>01</span>Register your details</li><li><span>02</span>Select your workspace</li><li><span>03</span>Begin recording fieldwork</li></ol>
+    </section>
+
+    <section class="auth-panel" aria-labelledby="signup-title">
+      <a class="back-home" href="../LANDINGPAGES/Index.html">
+        <i class="ph ph-arrow-left" aria-hidden="true"></i>
+        <span>Back to homepage</span>
+      </a>
+      <div class="panel-heading">
+        <p class="eyebrow">New account</p>
+        <h2 id="signup-title">Create your account</h2>
+        <p>Use accurate contact and organization information.</p>
+      </div>
+      <div class="message" role="alert" aria-live="polite"></div>
+      <form id="signup-form">
+        <div class="field-grid">
+          <label for="name">Full name<input id="name" name="name" autocomplete="name" required></label>
+          <label for="signup-role">User role<select id="signup-role" name="role" required><option value="">Select your role</option><option value="faculty">Faculty / Researcher</option><option value="technician">Student Technician</option><option value="official">BFAR / LGU Official</option></select></label>
+          <label for="signup-email">Email address<input id="signup-email" name="email" type="email" autocomplete="email" required></label>
+          <label for="organization">Institution / Office<input id="organization" name="organization" autocomplete="organization" placeholder="e.g. DOrSU or BFAR XI" required></label>
+          <label for="contact">Contact number<input id="contact" name="contact" type="tel" autocomplete="tel" inputmode="tel" required></label>
+          <span></span>
+          <label for="signup-password">Password<span class="password-field"><input id="signup-password" name="password" type="password" minlength="8" autocomplete="new-password" required><button class="toggle-password" type="button" aria-label="Show password"><i class="ph ph-eye" aria-hidden="true"></i></button></span></label>
+          <label for="confirm-password">Confirm password<span class="password-field"><input id="confirm-password" name="confirmPassword" type="password" minlength="8" autocomplete="new-password" required><button class="toggle-password" type="button" aria-label="Show password"><i class="ph ph-eye" aria-hidden="true"></i></button></span></label>
+        </div>
+        <label class="consent"><input name="consent" type="checkbox" required><span>I confirm that the information provided is accurate.</span></label>
+        <button class="submit" type="submit">Create ReefTrack account <i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+      </form>
+      <p class="switch">Already registered? <a href="login.html">Log in</a></p>
+    </section>
+  </main>
+  <script src="../scripts/auth.js"></script>
+</body>
+</html>

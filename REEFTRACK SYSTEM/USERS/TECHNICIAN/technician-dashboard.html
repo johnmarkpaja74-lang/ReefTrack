@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="ReefTrack role workspace">
+<title>Student Technician | ReefTrack</title>
+<link rel="icon" href="../../assets/images/LOGO.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="technician-dashboard.css">
+</head>
+<body class="role-technician min-vh-100" data-role="technician">
+<aside class="sidebar" id="sidebar">
+<a class="workspace-brand" href="#dashboard" aria-label="Go to Technician dashboard">
+<img src="../../assets/images/LOGO.png" alt="ReefTrack logo">
+<span>
+<strong>ReefTrack</strong>
+<small>Production and field records</small>
+</span>
+</a>
+<div class="identity">
+<span>ST</span>
+<div>
+<b id="side-name">Student Technician</b>
+<small>Operations Workspace</small>
+</div>
+</div>
+<nav class="side-nav" aria-label="Technician navigation">
+<span class="nav-section-label">Overview</span>
+<button class="nav active rt-nav-button" data-view="dashboard">
+<span class="rt-nav-icon ph ph-house" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Dashboard</span>
+</button>
+<span class="nav-section-label">Production Operations</span>
+<button class="nav rt-nav-button" data-view="batches">
+<span class="rt-nav-icon ph ph-table" aria-hidden="true">
+</span>
+<span class="rt-nav-label">My Batches</span>
+</button>
+<button class="nav rt-nav-button" data-view="entry">
+<span class="rt-nav-icon ph ph-plus-circle" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Batch &amp; Mixture Entry</span>
+</button>
+<button class="nav rt-nav-button" data-view="curing">
+<span class="rt-nav-icon ph ph-clock" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Curing Updates</span>
+</button>
+<span class="nav-section-label">Field Records</span>
+<button class="nav rt-nav-button" data-view="scanner">
+<span class="rt-nav-icon ph ph-scan" aria-hidden="true">
+</span>
+<span class="rt-nav-label">QR Scanner</span>
+</button>
+<button class="nav rt-nav-button" data-view="quality">
+<span class="rt-nav-icon ph ph-shield-check" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Quality Control</span>
+</button>
+<button class="nav rt-nav-button" data-view="deployment">
+<span class="rt-nav-icon ph ph-map-pin" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Deployment</span>
+</button>
+<button class="nav rt-nav-button" data-view="monitoring">
+<span class="rt-nav-icon ph ph-eye" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Monitoring</span>
+</button>
+<span class="nav-section-label">Account Records</span>
+<button class="nav rt-nav-button" data-view="history">
+<span class="rt-nav-icon ph ph-clock-counter-clockwise" aria-hidden="true">
+</span>
+<span class="rt-nav-label">History</span>
+</button>
+</nav>
+<button class="nav logout rt-nav-button" id="logout">
+<span class="rt-nav-icon ph ph-sign-out" aria-hidden="true">
+</span>
+<span class="rt-nav-label">Logout</span>
+</button>
+</aside>
+<main class="shell">
+<header class="topbar">
+<button id="menu" type="button" aria-label="Open navigation">
+<i class="ph ph-list" aria-hidden="true">
+</i>
+</button>
+<div class="topbar-title">
+<small>DOrSU Artificial Reef Production Facility</small>
+<h1>Student Technician</h1>
+</div>
+<div class="top-actions">
+<button class="top-user" id="technician-profile" type="button" aria-label="Open profile settings">
+<span>ST</span>
+<div>
+<b id="top-name">Technician</b>
+<small>Encoder access</small>
+</div>
+</button>
+</div>
+</header>
+<div class="content">
+<section class="view active" id="view-dashboard">
+<div class="welcome">
+<div>
+<small>OPERATIONS OVERVIEW</small>
+<h2>Good day, <span id="welcome-name">Technician</span>
+</h2>
+<p>Update assigned reef production and field records.</p>
+</div>
+<div class="role-note">
+<strong>Technician access</strong>
+<span aria-hidden="true">
+</span>
+<small>Faculty validates submissions</small>
+</div>
+</div>
+<div class="stats">
+<article>
+<i class="ph ph-package" aria-hidden="true">
+</i>
+<div>
+<small>Assigned Batches</small>
+<b id="s-assigned">0</b>
+</div>
+</article>
+<article>
+<i class="ph ph-clock-countdown" aria-hidden="true">
+</i>
+<div>
+<small>Currently Curing</small>
+<b id="s-curing">0</b>
+</div>
+</article>
+<article>
+<i class="ph ph-shield-check" aria-hidden="true">
+</i>
+<div>
+<small>Pending QC</small>
+<b id="s-qc">0</b>
+</div>
+</article>
+<article>
+<i class="ph ph-map-pin" aria-hidden="true">
+</i>
+<div>
+<small>Ready for Deployment</small>
+<b id="s-ready">0</b>
+</div>
+</article>
+<article>
+<i class="ph ph-binoculars" aria-hidden="true">
+</i>
+<div>
+<small>Monitoring Due</small>
+<b id="s-monitor">0</b>
+</div>
+</article>
+</div>
+<div class="dashboard-grid">
+<article class="panel span2">
+<div class="panel-head">
+<div>
+<h3>Recent Assigned Batches</h3>
+<p>Your latest production records</p>
+</div>
+<button class="link" data-go="batches">View all</button>
+</div>
+<div id="recent-batches" class="list-empty">
+<i class="ph ph-package" aria-hidden="true">
+</i>
+<span>No assigned batches yet.</span>
+</div>
+</article>
+<article class="panel">
+<div class="panel-head">
+<div>
+<h3>Tasks Requiring Action</h3>
+<p>Records waiting for your update</p>
+</div>
+</div>
+<div id="task-list" class="task-list">
+</div>
+</article>
+<article class="panel span2">
+<div class="panel-head">
+<div>
+<h3>Recent Updates</h3>
+<p>Your latest activities</p>
+</div>
+</div>
+<div id="recent-updates" class="timeline">
+</div>
+</article>
+<article class="panel">
+<div class="panel-head">
+<div>
+<h3>Quick Actions</h3>
+<p>Common field tasks</p>
+</div>
+</div>
+<div class="quick">
+<button data-go="entry">
+<i class="ph ph-plus-circle" aria-hidden="true">
+</i>
+<span>Create Batch</span>
+</button>
+<button data-go="scanner">
+<i class="ph ph-qr-code" aria-hidden="true">
+</i>
+<span>Scan QR</span>
+</button>
+<button data-go="curing">
+<i class="ph ph-clock-countdown" aria-hidden="true">
+</i>
+<span>Update Curing</span>
+</button>
+<button data-go="quality">
+<i class="ph ph-shield-check" aria-hidden="true">
+</i>
+<span>Record QC</span>
+</button>
+<button data-go="deployment">
+<i class="ph ph-map-pin" aria-hidden="true">
+</i>
+<span>Deployment</span>
+</button>
+<button data-go="monitoring">
+<i class="ph ph-binoculars" aria-hidden="true">
+</i>
+<span>Monitoring</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<section class="view" id="view-batches">
+<div class="page-head">
+<div>
+<small>ASSIGNED PRODUCTION</small>
+<h2>My Batches</h2>
+<p>Only records assigned to or encoded by you are shown.</p>
+</div>
+<button class="primary" data-go="entry">
+<i class="ph ph-plus" aria-hidden="true">
+</i>New Batch</button>
+</div>
+<div class="filter">
+<label>
+<i class="ph ph-magnifying-glass" aria-hidden="true">
+</i>
+<input id="batch-search" placeholder="Search Batch ID or status">
+</label>
+<select id="batch-status">
+<option value="all">All statuses</option>
+<option>Draft</option>
+<option>Pending Faculty Validation</option>
+<option>Curing</option>
+<option>Pending QC</option>
+<option>Ready for Deployment</option>
+<option>Deployed</option>
+</select>
+</div>
+<div id="batch-cards" class="batch-cards">
+</div>
+</section>
+<section class="view" id="view-entry">
+<div class="page-head">
+<div>
+<small>PRODUCTION ENCODING</small>
+<h2>Batch &amp; Mixture Entry</h2>
+<p>Encode production data for Faculty/Researcher validation.</p>
+</div>
+<span class="access-pill">No self-approval</span>
+</div>
+<form class="panel form" id="batch-form">
+<input type="hidden" name="editId">
+<div class="form-section">
+<h3>Production Information</h3>
+<div class="fields three">
+<label>Production date<input name="date" type="date" required>
+</label>
+<label>Number of reef units<input name="units" type="number" min="1" required>
+</label>
+<label>Curing duration (days)<input name="duration" type="number" min="7" max="90" value="28" required>
+</label>
+</div>
+</div>
+<div class="form-section">
+<h3>Mixture Composition</h3>
+<p class="hint">Percentages must total 100%.</p>
+<div class="fields four">
+<label>Clay Base (%)<input name="clay" type="number" min="0" max="100" value="65" required>
+</label>
+<label>Portland Cement (%)<input name="cement" type="number" min="0" max="100" value="15" required>
+</label>
+<label>Volcanic Ash Pozzolan (%)<input name="ash" type="number" min="0" max="100" value="15" required>
+</label>
+<label>Coconut Fiber (%)<input name="fiber" type="number" min="0" max="100" value="5" required>
+</label>
+</div>
+<div class="total mixture-total-row">
+<div class="mixture-total-copy">
+<small>Mixture total</small>
+<b id="mix-total">100%</b>
+</div>
+<span class="mixture-target">Required: 100%</span>
+</div>
+</div>
+<div class="form-section">
+<label>Production notes<textarea name="notes" rows="4" placeholder="Record preparation, molding, or production observations">
+</textarea>
+</label>
+</div>
+<div class="actions">
+<button class="secondary" type="button" id="save-draft">Save as Draft</button>
+<button class="primary" type="submit">Submit for Faculty Review</button>
+</div>
+</form>
+</section>
+<section class="view" id="view-curing">
+<div class="page-head">
+<div>
+<small>CURING OPERATIONS</small>
+<h2>Curing Updates</h2>
+<p>Record progress and observations for assigned batches.</p>
+</div>
+</div>
+<div class="split">
+<form class="panel form" id="curing-form">
+<h3>New Curing Update</h3>
+<label>Assigned batch<select name="batch" class="assigned-select" required>
+</select>
+</label>
+<div class="fields two">
+<label>Curing start date<input name="start" type="date" required>
+</label>
+<label>Current curing day<input name="day" type="number" min="1" required>
+</label>
+</div>
+<label class="progress-field">
+<span class="icon-label">
+<i class="ph ph-chart-line-up" aria-hidden="true">
+</i>Progress (%)</span>
+<output id="progress-output" for="curing-progress">50%</output>
+<input id="curing-progress" name="progress" type="range" min="0" max="100" value="50" aria-label="Curing progress percentage">
+</label>
+<label>Observation<textarea name="observation" required placeholder="e.g. No visible cracks">
+</textarea>
+</label>
+<label>Visible issues<textarea name="issues" placeholder="Enter none if no issues are visible">
+</textarea>
+</label>
+<label class="check">
+<input name="complete" type="checkbox"> Mark curing activity complete for Faculty review</label>
+<button class="primary full">Save Curing Update</button>
+</form>
+<article class="panel">
+<div class="panel-head">
+<div>
+<h3>Current Curing Records</h3>
+<p>Progress against target duration</p>
+</div>
+</div>
+<div id="curing-list">
+</div>
+</article>
+</div>
+</section>
+<section class="view" id="view-scanner">
+<div class="page-head">
+<div>
+<small>MOBILE IDENTIFICATION</small>
+<h2>QR Scanner</h2>
+<p>Retrieve assigned batch records without changing their QR identity.</p>
+</div>
+</div>
+<div class="split scanner-layout">
+<article class="panel scanner">
+<div class="camera">
+<video id="qr-video" playsinline muted>
+</video>
+<img class="qr-photo-preview" id="scan-photo-preview" alt="Captured QR photo">
+<div class="scan-box" id="scan-box">
+</div>
+<span id="scan-status" role="status" aria-live="polite">Camera is not active</span>
+</div>
+<div class="actions scanner-actions">
+<button class="secondary" id="stop-scan" type="button">
+<i class="ph ph-stop-circle" aria-hidden="true">
+</i>Stop</button>
+<button class="primary" id="start-scan" type="button">
+<i class="ph ph-camera" aria-hidden="true">
+</i>Start Camera</button>
+<button class="secondary scanner-switch" id="switch-camera" type="button" hidden disabled>
+<i class="ph ph-camera-rotate" aria-hidden="true"></i>Switch Camera</button>
+<label class="secondary qr-photo-action" for="scan-photo-input">
+<i class="ph ph-image" aria-hidden="true"></i><span>Take or Choose QR Photo</span>
+<input class="qr-photo-input" id="scan-photo-input" type="file" accept="image/*" capture="environment">
+</label>
+</div>
+<form id="qr-lookup">
+<label>Manual Batch ID<input name="batch" placeholder="RT-2026-001" required>
+</label>
+<button class="secondary">
+<i class="ph ph-magnifying-glass" aria-hidden="true">
+</i>Retrieve Record</button>
+</form>
+</article>
+<article class="panel" id="scan-result">
+<div class="empty">
+<i class="ph ph-qr-code" aria-hidden="true">
+</i>
+<h3>No batch scanned</h3>
+<p>Scan a QR or enter an assigned Batch ID.</p>
+</div>
+</article>
+</div>
+</section>
+<section class="view" id="view-quality">
+<div class="page-head">
+<div>
+<small>INSPECTION ENCODING</small>
+<h2>Quality Control</h2>
+<p>Record inspection results for final Faculty validation.</p>
+</div>
+<span class="access-pill">Technician cannot validate</span>
+</div>
+<div class="split">
+<form class="panel form" id="qc-form">
+<div class="form-card-head">
+<h3>Inspection Details</h3>
+<p>Complete all required fields before submitting the record.</p>
+</div>
+<label>Batch ID<select name="batch" class="assigned-select" required>
+</select>
+</label>
+<div class="fields two">
+<label>Inspection date<input name="date" type="date" required>
+</label>
+<label>Inspector<input name="inspector" required>
+</label>
+</div>
+<label>Inspection observations<textarea name="observation" required>
+</textarea>
+</label>
+<label>QC result<select name="result" required>
+<option value="">Select result</option>
+<option>Passed inspection</option>
+<option>Requires correction</option>
+<option>Failed inspection</option>
+</select>
+</label>
+<label>Remarks<textarea name="remarks">
+</textarea>
+</label>
+<button class="primary full">Submit for Faculty Validation</button>
+</form>
+<article class="panel qc-submissions-panel">
+<div class="panel-head">
+<div>
+<h3>My QC Submissions</h3>
+<p>Inspection records awaiting or completed by Faculty review.</p>
+</div>
+</div>
+<div id="qc-list">
+</div>
+</article>
+</div>
+</section>
+<section class="view" id="view-deployment">
+<div class="page-head">
+<div>
+<small>FIELD DEPLOYMENT</small>
+<h2>Deployment</h2>
+<p>Only Faculty-approved eligible batches are available.</p>
+</div>
+</div>
+<div class="split deployment-layout">
+<form class="panel form" id="deploy-form">
+<div class="form-card-head">
+<h3>Deployment Record</h3>
+<p>Enter the approved batch, deployment schedule, and exact field location.</p>
+</div>
+<label>Eligible batch<select name="batch" id="eligible-select" required>
+</select>
+</label>
+<div class="fields two">
+<label>Deployment date<input name="date" type="date" required>
+</label>
+<label>Number of deployed units<input name="units" type="number" min="1" required>
+</label>
+</div>
+<label>Deployment site<input name="site" required placeholder="Enter the official deployment site">
+</label>
+<div class="fields two">
+<label>Latitude<input name="latitude" type="number" step="any" required placeholder="e.g. 6.824100">
+</label>
+<label>Longitude<input name="longitude" type="number" step="any" required placeholder="e.g. 126.213400">
+</label>
+</div>
+<button type="button" class="secondary full" id="use-location">
+<i class="ph ph-crosshair" aria-hidden="true">
+</i>Use Current Location</button>
+<label>Field notes<textarea name="notes" placeholder="Record placement conditions and relevant field observations.">
+</textarea>
+</label>
+<button class="primary full">Save for Faculty Review</button>
+</form>
+<article class="panel map-panel">
+<div class="map-card-head">
+<h3>Deployment Location Preview</h3>
+<p>Select a point on the map or provide exact coordinates.</p>
+</div>
+<div id="tech-map">
+</div>
+<p class="hint">Enter coordinates or use your current location to preview the marker.</p>
+</article>
+</div>
+</section>
+<section class="view" id="view-monitoring">
+<div class="page-head">
+<div>
+<small>POST-DEPLOYMENT RECORDS</small>
+<h2>Monitoring</h2>
+<p>Submit field observations without automated reef-health decisions.</p>
+</div>
+<button class="secondary" data-go="scanner">
+<i class="ph ph-qr-code" aria-hidden="true">
+</i>Scan QR</button>
+</div>
+<form class="panel form" id="monitor-form">
+<div class="form-card-head">
+<h3>Monitoring Record</h3>
+<p>Document the current condition and supporting field evidence for a deployed batch.</p>
+</div>
+<div class="fields three">
+<label>Deployed batch<select name="batch" id="deployed-select" required>
+</select>
+</label>
+<label>Monitoring date<input name="date" type="date" required>
+</label>
+<label>Reef condition<select name="condition" required>
+<option>Good</option>
+<option>Fair</option>
+<option>Needs Attention</option>
+<option>Damaged</option>
+<option>Under Observation</option>
+</select>
+</label>
+</div>
+<label>Field observations<textarea name="observation" required placeholder="Describe the observed reef condition, stability, and marine activity.">
+</textarea>
+</label>
+<label>Field notes<textarea name="notes" placeholder="Add relevant site conditions or follow-up recommendations.">
+</textarea>
+</label>
+<label class="monitor-files">Supporting photos or documents<input name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx">
+<small>Accepted files: images, PDF, DOC, or DOCX.</small>
+</label>
+<div class="actions">
+<button type="button" class="secondary" id="save-monitor">Save Record</button>
+<button class="primary">Submit for Faculty Validation</button>
+</div>
+</form>
+<div id="monitor-list" class="records">
+</div>
+</section>
+<section class="view" id="view-history">
+<div class="page-head">
+<div>
+<small>MY ACTIVITY TRAIL</small>
+<h2>History</h2>
+<p>Your own submissions and operational updates.</p>
+</div>
+<button class="secondary" id="export-history">
+<i class="ph ph-download-simple" aria-hidden="true">
+</i>Export CSV</button>
+</div>
+<div class="filter">
+<label>
+<i class="ph ph-magnifying-glass" aria-hidden="true">
+</i>
+<input id="history-search" placeholder="Search record or activity">
+</label>
+<select id="history-status">
+<option value="all">All statuses</option>
+<option>Draft</option>
+<option>Pending</option>
+<option>Validated</option>
+<option>Rejected</option>
+</select>
+</div>
+<div class="panel table-wrap">
+<table>
+<thead>
+<tr>
+<th>Date &amp; Time</th>
+<th>Activity</th>
+<th>Record</th>
+<th>Details</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="history-body">
+</tbody>
+</table>
+</div>
+</section>
+<section class="view user-settings" id="view-profile">
+<div class="page-head">
+<div>
+<small>CONFIGURATION</small>
+<h2>Settings</h2>
+<p>Manage your profile and account security.</p>
+</div>
+<button class="primary settings-save" id="tech-save-settings" type="button">Save Changes</button>
+</div>
+<div class="settings-grid">
+<form class="panel form setting-card profile-card" id="profile-form">
+<h3>Profile Settings</h3>
+<label>Full name<input name="name" required>
+</label>
+<label>Email address<input name="email" type="email" readonly>
+</label>
+<label>Phone number<input name="phone" type="tel">
+</label>
+<label>Program / Department<input name="department">
+</label>
+</form>
+<form class="panel form setting-card password-card" id="password-form">
+<h3>Password Change</h3>
+<label>Current password<input name="current" type="password" required>
+</label>
+<label>New password<input name="password" type="password" minlength="8" required>
+</label>
+<label>Confirm new password<input name="confirm" type="password" minlength="8" required>
+</label>
+</form>
+</div>
+</section>
+</div>
+</main>
+<div class="toast" id="toast">
+</div>
+<div class="modal" id="logout-modal" aria-hidden="true">
+<div class="logout-confirm-card" role="dialog" aria-modal="true" aria-labelledby="technician-logout-title" aria-describedby="technician-logout-description">
+<button class="modal-x logout-close" type="button" aria-label="Close logout confirmation">
+<i class="ph ph-x" aria-hidden="true">
+</i>
+</button>
+<span class="logout-confirm-icon" aria-hidden="true"><i class="ph ph-sign-out"></i></span>
+<p class="logout-eyebrow">Account session</p>
+<h2 id="technician-logout-title">Sign out of ReefTrack?</h2>
+<p class="logout-confirm-copy" id="technician-logout-description">Your saved operational records will remain available. You will need to enter your credentials to access this workspace again.</p>
+<div class="logout-confirm-actions">
+<button class="secondary modal-x logout-stay" type="button"><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i>Stay signed in</button>
+<button class="danger logout-yes" id="confirm-logout" type="button"><i class="ph ph-sign-out" aria-hidden="true"></i>Sign out</button>
+</div>
+</div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+<script src="../../scripts/app-shell.js">
+</script>
+<script src="../../scripts/qrcode.bundle.js">
+</script>
+<script src="../../scripts/qr-scanner.legacy.min.js">
+</script>
+<script src="technician-dashboard.js">
+</script>
+</body>
+</html>
